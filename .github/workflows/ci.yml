@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            packages/engine/package-lock.json
+            packages/app/package-lock.json
+
+      - name: Install dependencies
+        run: npm run install:all
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # 地形資料是 gitignore 的產物（見 .gitignore），CI 不下載它——
+      # packages/engine/test/terrain.test.ts 在偵測不到圖磚時會自動整組 skip
+      # （見 test/helpers/loadTiles.ts 的 terrainAvailable()），不會讓這條 job 紅掉。
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
