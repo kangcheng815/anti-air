@@ -77,134 +77,153 @@ export function TopBar() {
       </div>
 
       <div className="topbar-controls">
-        <div className="seg" role="group" aria-label="估計模式">
-          {(['conservative', 'nominal', 'optimistic'] as EstimateMode[]).map((m) => (
-            <button
-              key={m}
-              className={estimateMode === m ? 'active' : ''}
-              onClick={() => setEstimateMode(m)}
-              title="切換參數的保守／標稱／樂觀端點"
-            >
-              {MODE_LABEL[m]}
-            </button>
-          ))}
+        <div className="tb-group">
+          <div className="seg" role="group" aria-label="估計模式">
+            {(['conservative', 'nominal', 'optimistic'] as EstimateMode[]).map((m) => (
+              <button
+                key={m}
+                className={estimateMode === m ? 'active' : ''}
+                onClick={() => setEstimateMode(m)}
+                title="切換參數的保守／標稱／樂觀端點"
+              >
+                {MODE_LABEL[m]}
+              </button>
+            ))}
+          </div>
+
+          <div className="seg" role="group" aria-label="圖層">
+            {LAYER_OPTIONS.map((o) => (
+              <button
+                key={o.id}
+                className={layerMode === o.id ? 'active' : ''}
+                onClick={() => setLayerMode(o.id)}
+                title={o.hint}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="seg" role="group" aria-label="圖層">
-          {LAYER_OPTIONS.map((o) => (
-            <button
-              key={o.id}
-              className={layerMode === o.id ? 'active' : ''}
-              onClick={() => setLayerMode(o.id)}
-              title={o.hint}
-            >
-              {o.label}
-            </button>
-          ))}
+        <div className="tb-divider" />
+
+        <div className="tb-group">
+          <select
+            value={threatId}
+            onChange={(e) => setThreatId(e.target.value)}
+            title="威脅的 RCS 決定所有感測器的偵測距離"
+          >
+            {THREATS.map((t) => (
+              <option key={t.id} value={t.id}>
+                威脅：{t.name_zh}（RCS {t.rcs_m2.nominal} m²）
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={c2Mode}
+            onChange={(e) => setC2Mode(e.target.value as typeof c2Mode)}
+            title="感測器—射手分離：射手能否使用其他陣地的軌跡"
+          >
+            <option value="shared">C2：全島共享軌跡</option>
+            <option value="independent">C2：各自為政</option>
+          </select>
+
+          <label
+            className={`check ${terrainAvailable ? '' : 'disabled'}`}
+            title={
+              terrainAvailable
+                ? '關掉可直接對比「不算地形」的理想涵蓋'
+                : '尚未下載地形資料，請執行 node tools/fetch-terrain.mjs'
+            }
+          >
+            <input
+              type="checkbox"
+              checked={terrainEnabled && terrainAvailable}
+              disabled={!terrainAvailable}
+              onChange={(e) => setTerrainEnabled(e.target.checked)}
+            />
+            地形
+          </label>
         </div>
 
-        <select
-          value={threatId}
-          onChange={(e) => setThreatId(e.target.value)}
-          title="威脅的 RCS 決定所有感測器的偵測距離"
-        >
-          {THREATS.map((t) => (
-            <option key={t.id} value={t.id}>
-              威脅：{t.name_zh}（RCS {t.rcs_m2.nominal} m²）
+        <div className="tb-divider" />
+
+        <div className="tb-group">
+          <button
+            className={sectionDrawing ? 'active-btn' : ''}
+            onClick={sectionDrawing ? clearSection : startSectionDraw}
+            title="在地圖上點兩下畫一條線，看側視剖面"
+          >
+            {sectionDrawing ? '取消剖面' : '畫剖面'}
+          </button>
+
+          <button
+            className={trackDrawing ? 'active-btn' : ''}
+            onClick={trackDrawing ? finishTrackDraw : startTrackDraw}
+            title="在地圖上點出進襲路線，雙擊或按此鈕結束。終點即目標區。"
+          >
+            {trackDrawing ? '完成航跡' : '畫航跡'}
+          </button>
+
+          <button
+            className={timelineOpen ? 'active-btn' : ''}
+            onClick={() => setTimelineOpen(!timelineOpen)}
+            title="接戰時間軸：射擊機會、通道飽和、漏網原因"
+            disabled={trackCount === 0}
+          >
+            時間軸{trackCount > 0 ? `（${trackCount}）` : ''}
+          </button>
+        </div>
+
+        <div className="tb-divider" />
+
+        <div className="tb-group">
+          <select value={basemapId} onChange={(e) => setBasemap(e.target.value)}>
+            {BASEMAPS.map((b) => (
+              <option key={b.id} value={b.id}>
+                底圖：{b.label}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value=""
+            onChange={(e) => {
+              const preset = PRESET_SCENARIOS.find((p) => p.id === e.target.value);
+              if (preset) loadPreset(preset.scenario);
+            }}
+            title="內建示範想定：陣地位置參考公開報導提及的營區大致地點，系統指派為本專案自行示範分層防空概念，非部署主張"
+          >
+            <option value="" disabled>
+              示範想定…
             </option>
-          ))}
-        </select>
+            {PRESET_SCENARIOS.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.label}
+              </option>
+            ))}
+          </select>
 
-        <select
-          value={c2Mode}
-          onChange={(e) => setC2Mode(e.target.value as typeof c2Mode)}
-          title="感測器—射手分離：射手能否使用其他陣地的軌跡"
-        >
-          <option value="shared">C2：全島共享軌跡</option>
-          <option value="independent">C2：各自為政</option>
-        </select>
-
-        <label
-          className={`check ${terrainAvailable ? '' : 'disabled'}`}
-          title={
-            terrainAvailable
-              ? '關掉可直接對比「不算地形」的理想涵蓋'
-              : '尚未下載地形資料，請執行 node tools/fetch-terrain.mjs'
-          }
-        >
+          <div className="seg" role="group" aria-label="存讀檔">
+            <button onClick={save}>存檔</button>
+            <button onClick={() => fileRef.current?.click()}>讀檔</button>
+          </div>
           <input
-            type="checkbox"
-            checked={terrainEnabled && terrainAvailable}
-            disabled={!terrainAvailable}
-            onChange={(e) => setTerrainEnabled(e.target.checked)}
+            ref={fileRef}
+            type="file"
+            accept="application/json"
+            hidden
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) load(f);
+              e.target.value = '';
+            }}
           />
-          地形
-        </label>
+        </div>
 
-        <button
-          className={sectionDrawing ? 'active-btn' : ''}
-          onClick={sectionDrawing ? clearSection : startSectionDraw}
-          title="在地圖上點兩下畫一條線，看側視剖面"
-        >
-          {sectionDrawing ? '取消剖面' : '畫剖面'}
-        </button>
+        <div className="tb-divider" />
 
-        <button
-          className={trackDrawing ? 'active-btn' : ''}
-          onClick={trackDrawing ? finishTrackDraw : startTrackDraw}
-          title="在地圖上點出進襲路線，雙擊或按此鈕結束。終點即目標區。"
-        >
-          {trackDrawing ? '完成航跡' : '畫航跡'}
-        </button>
-
-        <button
-          className={timelineOpen ? 'active-btn' : ''}
-          onClick={() => setTimelineOpen(!timelineOpen)}
-          title="接戰時間軸：射擊機會、通道飽和、漏網原因"
-          disabled={trackCount === 0}
-        >
-          時間軸{trackCount > 0 ? `（${trackCount}）` : ''}
-        </button>
-
-        <select value={basemapId} onChange={(e) => setBasemap(e.target.value)}>
-          {BASEMAPS.map((b) => (
-            <option key={b.id} value={b.id}>
-              底圖：{b.label}
-            </option>
-          ))}
-        </select>
-
-        <select
-          value=""
-          onChange={(e) => {
-            const preset = PRESET_SCENARIOS.find((p) => p.id === e.target.value);
-            if (preset) loadPreset(preset.scenario);
-          }}
-          title="內建示範想定：陣地位置參考公開報導提及的營區大致地點，系統指派為本專案自行示範分層防空概念，非部署主張"
-        >
-          <option value="" disabled>
-            示範想定…
-          </option>
-          {PRESET_SCENARIOS.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.label}
-            </option>
-          ))}
-        </select>
-
-        <button onClick={save}>存檔</button>
-        <button onClick={() => fileRef.current?.click()}>讀檔</button>
-        <input
-          ref={fileRef}
-          type="file"
-          accept="application/json"
-          hidden
-          onChange={(e) => {
-            const f = e.target.files?.[0];
-            if (f) load(f);
-            e.target.value = '';
-          }}
-        />
         <button className="danger" onClick={clearAll}>
           清空
         </button>

@@ -44,9 +44,10 @@ body {
 
 .topbar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 6px 16px;
   padding: 8px 14px;
   background: var(--panel);
   border-bottom: 1px solid var(--border);
@@ -58,6 +59,7 @@ body {
   display: flex;
   align-items: baseline;
   gap: 12px;
+  padding-top: 4px;
 }
 
 .disclaimer {
@@ -70,7 +72,35 @@ body {
 .topbar-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+
+.tb-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tb-divider {
+  align-self: stretch;
+  width: 1px;
+  min-height: 22px;
+  background: var(--border);
+}
+
+.presets button,
+.topbar-controls button,
+.topbar-controls select {
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--panel);
+  cursor: pointer;
+  font: inherit;
 }
 
 .seg {
@@ -86,6 +116,7 @@ body {
   padding: 5px 11px;
   cursor: pointer;
   border-right: 1px solid var(--border);
+  border-radius: 0;
 }
 
 .seg button:last-child {
@@ -650,17 +681,6 @@ button.active-btn {
 .presets {
   display: flex;
   gap: 4px;
-}
-
-.presets button,
-.topbar-controls button,
-.topbar-controls select {
-  padding: 5px 10px;
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  background: var(--panel);
-  cursor: pointer;
-  font: inherit;
 }
 
 .presets button.active {
