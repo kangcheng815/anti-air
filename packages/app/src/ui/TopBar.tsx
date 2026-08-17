@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { useStore, type Scenario } from '../state/store';
 import { BASEMAPS } from '../map/basemaps';
 import { THREATS } from '../data/threats';
+import { PRESET_SCENARIOS } from '../data/presets';
 import type { LayerMode } from '../state/store';
 import type { EstimateMode } from '@anti-air/engine';
 
@@ -62,6 +63,10 @@ export function TopBar() {
         alert('想定檔解析失敗：不是有效的 JSON。');
       }
     });
+  }
+
+  function loadPreset(scenario: Scenario) {
+    useStore.getState().importScenario(scenario);
   }
 
   return (
@@ -165,6 +170,24 @@ export function TopBar() {
           {BASEMAPS.map((b) => (
             <option key={b.id} value={b.id}>
               底圖：{b.label}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value=""
+          onChange={(e) => {
+            const preset = PRESET_SCENARIOS.find((p) => p.id === e.target.value);
+            if (preset) loadPreset(preset.scenario);
+          }}
+          title="內建示範想定：陣地位置參考公開報導提及的營區大致地點，系統指派為本專案自行示範分層防空概念，非部署主張"
+        >
+          <option value="" disabled>
+            示範想定…
+          </option>
+          {PRESET_SCENARIOS.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.label}
             </option>
           ))}
         </select>

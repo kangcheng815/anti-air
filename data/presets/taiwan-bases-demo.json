@@ -1,0 +1,29 @@
+{
+  "$comment": "示範想定，非部署主張。陣地座標取自公開報導提及的營區/基地大致位置（見 data/sources.json 的 uptogo-taiwan-bases-overview），系統指派為本專案自行示範分層防空概念所用，不代表任何單位實際配置的系統型別、數量或有無。見 README『這不是什麼』與 TopBar 的假想示例警語。",
+  "version": 2,
+  "name": "台灣基地分層防空示範（假想）",
+  "altitudeM": 5000,
+  "estimateMode": "nominal",
+  "aspect": "head_on",
+  "tracks": [],
+  "sites": [
+    { "id": "demo-taipei-dazhi", "systemId": "patriot-pac3", "name": "台北大直（示例）", "lon": 121.5486, "lat": 25.0817, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-wanli", "systemId": "tk3", "name": "新北萬里（示例）", "lon": 121.6890, "lat": 25.1800, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-longtan", "systemId": "tk2", "name": "桃園龍潭大漢營區（示例）", "lon": 121.2144, "lat": 24.8628, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-hukou", "systemId": "gun35", "name": "新竹湖口營區（示例）", "lon": 121.0464, "lat": 24.9013, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-hsinchu-ab", "systemId": "patriot-pac2", "name": "新竹空軍基地（示例）", "lon": 121.0775, "lat": 24.8267, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-cck", "systemId": "tk3", "name": "台中清泉崗基地（示例）", "lon": 120.6178, "lat": 24.2668, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-chenggongling", "systemId": "avenger", "name": "台中成功嶺（示例）", "lon": 120.6570, "lat": 24.2380, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-chiayi-ab", "systemId": "patriot-pac3", "name": "嘉義空軍基地（示例）", "lon": 120.3297, "lat": 23.4708, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-tainan-ab", "systemId": "tk3", "name": "台南空軍基地（示例）", "lon": 120.2058, "lat": 22.9502, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-zuoying", "systemId": "sm2", "name": "高雄左營軍港（示例）", "lon": 120.2792, "lat": 22.6844, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-linyuan", "systemId": "stinger", "name": "高雄林園（示例）", "lon": 120.4030, "lat": 22.4780, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-pingtung-ab", "systemId": "tk1", "name": "屏東空軍基地（示例）", "lon": 120.4761, "lat": 22.6767, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-wanjin", "systemId": "avenger", "name": "屏東萬金營區（示例）", "lon": 120.5480, "lat": 22.5670, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-suao", "systemId": "phalanx", "name": "宜蘭蘇澳中正基地（示例）", "lon": 121.8592, "lat": 24.5936, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-hualien-jiashan", "systemId": "tk3", "name": "花蓮空軍基地／佳山基地（示例）", "lon": 121.6172, "lat": 23.9878, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-chihhang", "systemId": "tk1", "name": "台東志航基地（示例）", "lon": 121.1033, "lat": 22.7550, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-penghu", "systemId": "tk2", "name": "澎湖防衛指揮部（示例）", "lon": 119.6094, "lat": 23.5711, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null },
+    { "id": "demo-kinmen", "systemId": "stinger", "name": "金門防衛指揮部（示例）", "lon": 118.3639, "lat": 24.4324, "groundElevationM": 0, "elevationSource": "dem", "status": "ready", "readyRoundsOverride": null }
+  ]
+}
