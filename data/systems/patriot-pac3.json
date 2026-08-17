@@ -1,0 +1,44 @@
+{
+  "id": "patriot-pac3",
+  "name_zh": "愛國者三型（PAC-3）",
+  "name_en": "Patriot PAC-3 (CRI / MSE)",
+  "tier": "high",
+  "role": ["sam", "abm"],
+  "platform": "semi-mobile",
+
+  "kinematics": {
+    "$comment": "本表以 PAC-3 CRI（opennuclear-patriot-tw 有台灣專屬數字）為主幹。CRI 對空中目標（本表用途）的數字是最大射程 70 km、最大攔截高度 24.4 km；同一份來源另外給了對彈道飛彈目標的包絡（攔截距離約 35 km、高度 20 km）——那是完全不同的接戰幾何（迎向高速再入體，不是追瞄水平飛行的空中目標），本表結構（依高度索引、單一射程數字）無法同時表達兩者，因此**只採用對空中目標的數字，彈道飛彈攔截包絡未被建模**，這是已知簡化，與本專案 threats.json 的 tbm 威脅類別本身就是粗略近似互相呼應。PAC-3 MSE（台灣 2025–2026 起接收的新型）『射程與高度優於 CRI』，但查無公開的精確數字，未反映在本表的 nominal，只放寬在 max 端。",
+    "envelope": [
+      { "alt_km": 0.1,  "r_max": { "min": 15, "nominal": 25,  "max": 40,  "confidence": "low", "sources": [], "note": "海平面附近阻力主導，實務上多半是地平線先咬死；無公開來源給此高度數字，屬工程推估" },
+                        "r_min": { "nominal": 2, "confidence": "low", "sources": [] } },
+      { "alt_km": 1,    "r_max": { "min": 30, "nominal": 45, "max": 60, "confidence": "low", "sources": [] } },
+      { "alt_km": 5,    "r_max": { "min": 45, "nominal": 62, "max": 85, "confidence": "low", "sources": [] } },
+      { "alt_km": 10,   "r_max": { "min": 50, "nominal": 70, "max": 100, "confidence": "medium", "sources": ["opennuclear-patriot-tw"], "note": "70 km 是 opennuclear-patriot-tw 引用台灣官方對 PAC-3 CRI『對空中目標最大射程』的數字；max 100 為 PAC-3 MSE『射程優於 CRI』的粗略上調，無精確公開數字支撐" } },
+      { "alt_km": 24,   "r_max": { "min": 40, "nominal": 60, "max": 90, "confidence": "medium", "sources": ["opennuclear-patriot-tw"], "note": "24.4 km 是官方公布的最大攔截高度上限，本列代表接近該上限時射程明顯收縮" } }
+    ],
+    "alt_limits": { "min_km": 0.02, "max_km": 24.4 },
+    "aspect_factor": { "head_on": 1.0, "beam": 0.75, "tail_chase": 0.45 }
+  },
+
+  "guidance": { "type": "active_rf", "requires_illumination": false, "uplink_required": true },
+
+  "sensor": {
+    "antenna_height_m": { "nominal": 6, "min": 4, "max": 12, "confidence": "low", "note": "與 PAC-2 共用同一套 AN/MPQ-53/65 火力單元雷達，相對地面架高無公開精確數字" },
+    "r_det_ref_km": { "nominal": 150, "min": 120, "max": 170, "confidence": "medium", "sources": ["mda-mpq5365", "missilery-patriot"], "note": "與 patriot-pac2 共用同一雷達，數字與理由相同；PAC-3 配套的較新 AN/MPQ-65 版本讓 min 端略高於 PAC-2 條目" },
+    "rcs_ref_m2": 1.0,
+    "elevation_limits_deg": [-3, 85],
+    "azimuth_mask_deg": []
+  },
+
+  "engagement": {
+    "reaction_s": { "nominal": 10, "min": 6, "max": 20, "confidence": "low" },
+    "channels": { "nominal": 8, "min": 6, "max": 24, "confidence": "low", "sources": ["missilery-patriot"], "note": "與 patriot-pac2 共用同一套射控／火力單元，通道數是火力單元層級的限制，不是飛彈種類決定的，故沿用同一數字與理由" },
+    "assess_s": { "nominal": 4, "confidence": "low" },
+    "avg_missile_speed_mps": { "nominal": 1300, "min": 1000, "max": 1700, "confidence": "low", "sources": [], "note": "公開來源對 PAC-3 給『Mach 4.5 以上』『Mach 5』『對目標的相對終端速度 Mach 8』（後者是合速度，不是飛彈本身的速度，不能直接採用）；本欄位取自身速度 Mach ~4 附近當全程平均，理由與其他系統一致：飛彈助推後會減速，套峰值會低估飛行時間" },
+    "ready_rounds": { "nominal": 16, "confidence": "medium", "sources": ["opennuclear-patriot-tw"], "note": "PAC-3 CRI 四聯裝、每具發射器 16 枚，opennuclear-patriot-tw 直接給出此數字。同一來源提到 PAC-3 MSE 彈體較大，每具發射器僅 12 枚——本欄位代表 CRI，若陣地實際裝填 MSE 應在 UI 用『本陣地待發彈』調低" },
+    "rounds_per_engagement": { "nominal": 1, "confidence": "high", "note": "命中即摧毀（hit-to-kill），單發接戰，不像 35 快砲需要連射" }
+  },
+
+  "targets": ["aircraft", "cruise_missile", "tbm", "uav"],
+  "render": { "hue": 255, "z_order": 11 }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "sw2-naval",
+  "name_zh": "海劍二（艦載）",
+  "name_en": "Sea Sword II (TC-2N)",
+  "tier": "short",
+  "role": ["sam"],
+  "platform": "naval",
+
+  "kinematics": {
+    "$comment": "與 sw2-land.json 同一枚飛彈家族，但艦射 TC-2N 型有助推器加速段，wikipedia-sky-sword-ii 給的射程是 30 km（陸射型拿掉助推器只剩 15 km）。本表沿用陸射型的方法論（低高度阻力折減），只把量級整體上調到吻合 30 km 這個錨點。台灣錦江級巡邏艦、沱江級巡邏艦搭載。",
+    "envelope": [
+      { "alt_km": 0.05, "r_max": { "min": 15, "nominal": 22, "max": 28, "confidence": "low", "sources": [] },
+                        "r_min": { "nominal": 2, "confidence": "low" } },
+      { "alt_km": 1,    "r_max": { "min": 22, "nominal": 30, "max": 38, "confidence": "medium", "sources": ["wikipedia-sky-sword-ii"], "note": "30 km 是 wikipedia-sky-sword-ii 對艦射 TC-2N 型給出的射程數字" } },
+      { "alt_km": 5,    "r_max": { "min": 25, "nominal": 35, "max": 45, "confidence": "low", "sources": [] } },
+      { "alt_km": 10,   "r_max": { "min": 20, "nominal": 32, "max": 42, "confidence": "low", "sources": [] } }
+    ],
+    "alt_limits": { "min_km": 0.015, "max_km": 15 },
+    "aspect_factor": { "head_on": 1.0, "beam": 0.75, "tail_chase": 0.45 }
+  },
+
+  "guidance": { "type": "active_rf", "requires_illumination": false, "uplink_required": false },
+
+  "sensor": {
+    "antenna_height_m": { "nominal": 8, "min": 5, "max": 12, "confidence": "low", "note": "艦體桅杆高度，高於陸射型的 4 m，理由與 sm2.json 相同" },
+    "r_det_ref_km": { "nominal": 70, "min": 45, "max": 110, "confidence": "low", "sources": [], "note": "與 sw2-land.json 同理由：公開資料查無精確探測距離，此值為量級推估，略高於陸射型以反映桅杆高度優勢" },
+    "rcs_ref_m2": 1.0,
+    "elevation_limits_deg": [-5, 65],
+    "azimuth_mask_deg": []
+  },
+
+  "engagement": {
+    "reaction_s": { "nominal": 6, "min": 4, "max": 12, "confidence": "low" },
+    "channels": { "nominal": 4, "min": 2, "max": 8, "confidence": "low" },
+    "assess_s": { "nominal": 5, "confidence": "low" },
+    "avg_missile_speed_mps": { "nominal": 950, "min": 750, "max": 1200, "confidence": "low", "sources": ["wikipedia-sky-sword-ii"], "note": "與 sw2-land.json 同理由：公開峰值 Mach 4–6，本欄位取全程平均且因艦射型有助推器而略高於陸射型" },
+    "ready_rounds": { "nominal": 8, "confidence": "low", "note": "小型飛彈快艇（如沱江級）常見配置為個位數枚待射彈，公開資料查無台灣艦艇的精確配置數字，此為量級推估，應在 UI 依實際艦型調整" }
+  },
+
+  "targets": ["aircraft", "helo", "cruise_missile", "uav"],
+  "render": { "hue": 65, "z_order": 31 }
+}

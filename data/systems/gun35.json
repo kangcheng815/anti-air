@@ -1,0 +1,43 @@
+{
+  "id": "gun35",
+  "name_zh": "35 快砲（天兵系統）",
+  "name_en": "Skyguard / Oerlikon 35mm",
+  "tier": "point",
+  "role": ["gun"],
+  "platform": "semi-mobile",
+
+  "kinematics": {
+    "$comment": "wikipedia-oerlikon-gdf 給出的官方規格是有效射程 4,000 m、射高 4,000 m（ATOM 彈種）——與本表低空 nominal 4 km、alt_limits.max_km 4 km 直接吻合，這是本表少數有規格書等級（而非媒體轉述）數字支撐的系統。3 km 與 4 km 高度那兩列的下修（射程隨高度遞減到接近 0）沒有直接公開數字，是彈道學上『射高即射程上限、越接近射高水平分量越小』的工程推估，維持 low。",
+    "envelope": [
+      { "alt_km": 0.05, "r_max": { "min": 2.5, "nominal": 4, "max": 4, "confidence": "medium", "sources": ["wikipedia-oerlikon-gdf"], "note": "有效射程 4,000 m，與 Oerlikon GDF 官方規格（Wikipedia 轉引）直接吻合" },
+                        "r_min": { "nominal": 0.1, "confidence": "low" } },
+      { "alt_km": 1,    "r_max": { "min": 2.5, "nominal": 3.5, "max": 4, "confidence": "medium", "sources": ["wikipedia-oerlikon-gdf"] } },
+      { "alt_km": 3,    "r_max": { "min": 1.0, "nominal": 2.0, "max": 3.0, "confidence": "low", "sources": [] } },
+      { "alt_km": 4,    "r_max": { "min": 0,   "nominal": 0.5, "max": 1.5, "confidence": "low", "sources": [] } }
+    ],
+    "alt_limits": { "min_km": 0, "max_km": 4 },
+    "aspect_factor": { "head_on": 1.0, "beam": 0.9, "tail_chase": 0.6 }
+  },
+
+  "guidance": { "type": "ballistic", "requires_illumination": true, "uplink_required": false },
+
+  "sensor": {
+    "antenna_height_m": { "nominal": 3, "confidence": "low" },
+    "r_det_ref_km": { "nominal": 15, "min": 12, "max": 20, "confidence": "medium", "sources": ["wikipedia-oerlikon-gdf"], "note": "Skyguard 配套的 Super Fledermaus 搜索與追蹤雷達均約 15 km（Wikipedia 轉引）。下修自原本的 nominal 20：舊估計沒有依據，這個數字有規格書級來源支撐" },
+    "rcs_ref_m2": 1.0,
+    "elevation_limits_deg": [-5, 85],
+    "azimuth_mask_deg": []
+  },
+
+  "engagement": {
+    "reaction_s": { "nominal": 4, "min": 3, "max": 8, "confidence": "low" },
+    "channels": { "nominal": 1, "confidence": "medium", "note": "非公開資料推估，是結構性事實：雙管砲身共用同一套射控雷達與計算機，物理上同時只能對一個目標解算射擊諸元。medium 而非 high 是為了替『某些型號可能有備援射控』這種本專案未查證的可能性留一點餘裕" },
+    "assess_s": { "nominal": 2, "confidence": "low" },
+    "avg_missile_speed_mps": { "nominal": 1175, "confidence": "high", "sources": ["wikipedia-oerlikon-gdf"], "note": "砲口初速（HEI-T 彈種，1,175 m/s，與 Oerlikon GDF 官方規格精確吻合），非飛彈；t_flyout 用它算彈道飛行時間。砲彈幾乎不像飛彈那樣沿途減速，用初速當『平均』速度比飛彈系統更站得住腳，這是本專案唯一一個 confidence: high 的速度欄位" },
+    "ready_rounds": { "nominal": 238, "confidence": "low", "note": "以發數計，非彈；配合 rounds_per_engagement 換算成接戰次數" },
+    "rounds_per_engagement": { "nominal": 30, "min": 20, "max": 45, "confidence": "low", "note": "一次接戰的連射發數。公開資料無定值，取 35 mm 級單目標齊射的常見量級；238 發約合 8 次接戰" }
+  },
+
+  "targets": ["aircraft", "helo", "uav", "cruise_missile", "rocket"],
+  "render": { "hue": 0, "z_order": 50 }
+}

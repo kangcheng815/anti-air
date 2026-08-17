@@ -1,0 +1,79 @@
+{
+  "$comment": "威脅剖面。RCS 是縱深分析中最敏感的參數：偵測距離隨 RCS 的四次方根變化，所以 0.1 m² 與 5 m² 之間差 2.7 倍。這些數值同樣是公開推估，且 RCS 隨頻段與姿態變化極大，單一數字必然是簡化。前六筆是通用類別，sources 引用的是公開軍事媒體對特定機型的估計值，用來校準『類別』的量級，不對應任何一個真實存在的特定目標。後三筆（yj-12、j-20、df-15）是具名的公開已知型號，直接以該型號的公開規格為準——這不是情報判斷，是把維基百科等級的公開資訊整理成本工具能吃的格式，見各自 note 的分歧與不確定度。",
+  "threats": [
+    {
+      "id": "cruise-missile",
+      "name_zh": "巡弋飛彈（掠海）",
+      "class": "cruise_missile",
+      "rcs_m2": { "min": 0.03, "nominal": 0.1, "max": 0.5, "confidence": "low", "sources": ["militaryembedded-rcs"], "note": "公開來源本身對戰斧級巡弋飛彈的 RCS 估計就分歧極大：militaryembedded-rcs 給 0.5 m²（落在本欄位 max 端），另有來源給『< 0.05 m²』（落在 min 端附近）。這個分歧本身就是理由：巡弋飛彈的公開 RCS 沒有共識值，給區間比給單一數字更誠實" },
+      "typical_altitude_m": 100,
+      "speed_mps": { "nominal": 250, "min": 200, "max": 300, "confidence": "low" },
+      "note": "本工具最重要的威脅型別：低空 + 小 RCS，同時壓縮偵測距離與地形視線。"
+    },
+    {
+      "id": "strike-aircraft",
+      "name_zh": "攻擊機",
+      "class": "aircraft",
+      "rcs_m2": { "min": 2, "nominal": 5, "max": 15, "confidence": "low", "sources": ["militaryembedded-rcs"], "note": "量級對照：F/A-18 級約 1 m²、F-16 級約 5 m²、F-15 級約 25 m²（militaryembedded-rcs）。本類別代表通用攻擊機，取 F-16 級當標稱、上界略低於 F-15 級" },
+      "typical_altitude_m": 5000,
+      "speed_mps": { "nominal": 280, "min": 200, "max": 400, "confidence": "low" }
+    },
+    {
+      "id": "lo-fighter",
+      "name_zh": "低可偵測性戰機",
+      "class": "aircraft",
+      "rcs_m2": { "min": 0.001, "nominal": 0.01, "max": 0.1, "confidence": "low", "sources": ["militaryembedded-rcs", "rcs-public-synthesis"], "note": "公開 RCS 估計差異達數個數量級：F-35 前向約 0.005 m²、F-22 約 0.0001 m²（militaryembedded-rcs）。本欄位的 nominal 0.01 刻意比這兩個具體機型都保守（數字更大），因為姿態非最佳、非前向時匿蹤機的 RCS 會遠高於官方宣傳的前向峰值" },
+      "typical_altitude_m": 10000,
+      "speed_mps": { "nominal": 300, "min": 220, "max": 450, "confidence": "low" }
+    },
+    {
+      "id": "uav",
+      "name_zh": "中空長航時無人機",
+      "class": "uav",
+      "rcs_m2": { "min": 0.02, "nominal": 0.1, "max": 1.0, "confidence": "low", "sources": [], "note": "查無中空長航時（MALE 級，如 Predator/Reaper 量級）無人機的可信公開 RCS 數字。學術文獻對『小型』固定翼無人機給出的量級是 0.1–0.4 m² 級（IET/IEEE 論文，機體遠小於 MALE 級），可作為下界參考，但 MALE 級機體大上一截，故本欄位的 min/nominal 高於那些論文數字、max 留給更保守的情境" },
+      "typical_altitude_m": 4000,
+      "speed_mps": { "nominal": 60, "min": 40, "max": 90, "confidence": "low" }
+    },
+    {
+      "id": "helo",
+      "name_zh": "武裝直升機（貼地）",
+      "class": "helo",
+      "rcs_m2": { "min": 1, "nominal": 3, "max": 10, "confidence": "low", "sources": [], "note": "查無可信的公開直升機 RCS 數字（多篇學術論文只給計算方法，不給具體機型量測值）。此欄位純粹是『比同量級固定翼機大』的工程推估，不應被當成對任何特定機型的估計" },
+      "typical_altitude_m": 60,
+      "speed_mps": { "nominal": 70, "min": 40, "max": 90, "confidence": "low" }
+    },
+    {
+      "id": "tbm",
+      "name_zh": "戰術彈道飛彈（中段）",
+      "class": "tbm",
+      "rcs_m2": { "min": 0.01, "nominal": 0.05, "max": 0.3, "confidence": "low", "sources": [] },
+      "typical_altitude_m": 40000,
+      "speed_mps": { "nominal": 2000, "min": 1500, "max": 3000, "confidence": "low", "note": "查無戰術彈道飛彈中段速度的可信公開數字；公開來源多只給再入段（末端）速度，例如 DF-15 級『terminal velocity over Mach 6』，那是末段而非中段，兩者不能互換。此欄位維持原本的工程推估，未因搜尋而變動" }
+    },
+    {
+      "id": "yj-12",
+      "name_zh": "鷹擊-12（超音速反艦／對陸攻擊巡弋飛彈）",
+      "class": "cruise_missile",
+      "rcs_m2": { "min": 0.1, "nominal": 0.3, "max": 1.0, "confidence": "low", "sources": [], "note": "查無鷹擊-12 本身的公開 RCS 數字。超音速反艦飛彈的彈體（2–2.5 噸級，見 globalsecurity-yj12）遠大於戰斧級次音速巡弋飛彈，且超音速氣動外形通常不像次音速飛彈那樣做匿蹤修形，本欄位據此把 RCS 訂得比 cruise-missile 這個通用類別高，屬工程推估非量測值" },
+      "typical_altitude_m": 15,
+      "speed_mps": { "nominal": 510, "min": 460, "max": 1360, "confidence": "medium", "sources": ["globalsecurity-yj12"], "note": "巡航段 Mach 1.5（約 510 m/s）、掠海高度 12–15 m；末段衝刺可達 Mach 4（約 1360 m/s，見 max）。這是本專案第一個超音速威脅——同樣是『巡弋飛彈』類別，但反應時間比 cruise-missile（250 m/s）短了一個數量級，直接影響接戰時間軸的射擊機會數，是刻意收錄這一筆的理由" },
+      "note": "超音速掠海反艦飛彈。與通用 cruise-missile 類別相比，本筆的重點不是 RCS 而是速度——同樣的陣地配置，換成這個威脅之後反應時間會被壓縮到接近極限，射擊機會可能從兩三次掉到一次。"
+    },
+    {
+      "id": "j-20",
+      "name_zh": "殲-20（匿蹤戰機）",
+      "class": "aircraft",
+      "rcs_m2": { "min": 0.005, "nominal": 0.03, "max": 0.5, "confidence": "low", "sources": [], "note": "查無殲-20 的公開量測 RCS 數字，只有『比 Su-57 匿蹤、比 F-22／F-35 差』這種相對排序的定性描述（見 note 欄位引用的搜尋結果）。殲-20 的設計目標明確是前向匿蹤優先、非全向匿蹤（機身修形集中在正面弧），本欄位的 max 端因此刻意拉得比 lo-fighter 類別更高，反映『非正面姿態下 RCS 會明顯回升』這個已知的設計取捨，而不是暗示這款飛機整體比通用低可偵測性戰機類別更容易偵測" },
+      "typical_altitude_m": 11000,
+      "speed_mps": { "nominal": 350, "min": 280, "max": 580, "confidence": "low", "note": "公開資料給的『最高速度 2,100 km/h（約 583 m/s，約 Mach 1.7）』與其他同代戰機的公開極速數字（通常 Mach 2+）不太一致，很可能是巡航速度被誤植為極速，本專案不採信為極速，取偏保守的中段值當標稱" }
+    },
+    {
+      "id": "df-15",
+      "name_zh": "東風-15（短程彈道飛彈）",
+      "class": "tbm",
+      "rcs_m2": { "min": 0.01, "nominal": 0.05, "max": 0.3, "confidence": "low", "sources": [], "note": "沿用通用 tbm 類別的 RCS，查無東風-15 再入載具本身的公開 RCS 數字" },
+      "typical_altitude_m": 20000,
+      "speed_mps": { "nominal": 2038, "min": 1500, "max": 3000, "confidence": "medium", "sources": ["globalsecurity-df15"], "note": "彈道頂點（apogee）公開數字約 100 km，但這裡刻意**不**用頂點當 typical_altitude_m：本目錄裡沒有任何一套系統的 alt_limits.max_km 超過 45 km（天弓三型），在 100 km 高度畫一條航跡等於預設『沒有任何系統打得到』，示範起來沒有意義，而且會被誤讀成『這個威脅打不到』而不是『中段外大氣層攔截本來就不是這些系統的任務』。改取 20 km——與 opennuclear-patriot-tw 引用 PAC-3 CRI 對彈道飛彈目標『攔截高度約 20 km』的數字一致，代表的是再入末段、終端防禦真正接戰的高度窗口，不是飛彈的物理頂點。末段再入終端速度公開稱『Mach 6 以上』（約 2,038 m/s，海平面基準，實際在高空會更快），本欄位取這個數字當標稱；中段速度公開資料同樣查無，維持與通用 tbm 類別相同的區間" }
+    }
+  ]
+}

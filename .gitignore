@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.vite/
+*.log
+
+# DEM 原始資料與產生的地形磚：大且可重建，不進版控
+data/dem/
+data/terrain-tiles/
+packages/app/public/terrain/

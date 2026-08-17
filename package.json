@@ -1,0 +1,13 @@
+{
+  "name": "anti-air",
+  "version": "0.1.0",
+  "private": true,
+  "description": "台灣防空涵蓋分析工具",
+  "scripts": {
+    "dev": "npm --prefix packages/app run dev",
+    "build": "npm --prefix packages/app run build",
+    "test": "npm --prefix packages/engine run test && npm --prefix packages/app run test",
+    "typecheck": "npm --prefix packages/engine run typecheck && npm --prefix packages/app run typecheck",
+    "install:all": "npm --prefix packages/engine install && npm --prefix packages/app install"
+  }
+}

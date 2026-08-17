@@ -1,0 +1,43 @@
+{
+  "id": "tk2",
+  "name_zh": "天弓二型",
+  "name_en": "Tien Kung II",
+  "tier": "medium",
+  "role": ["sam"],
+  "platform": "fixed",
+
+  "kinematics": {
+    "$comment": "射程是本表少見的三方公開數字互相矛盾的案例：opennuclear-tk1-tk2 自己估算約 160 km（明講是『保守估計』，同篇提到坊間常引用 200 km）；另一份泛用搜尋結果給的是 100 km。三個數字橫跨 100–200 km，沒有共識，confidence 因此維持 low，用寬區間表達分歧，而不是挑一個看起來『比較權威』的數字假裝定案。發射方式從天弓一型的行動發射器改成固井垂直發射，platform 因此改成 fixed。",
+    "envelope": [
+      { "alt_km": 0.1,  "r_max": { "min": 15, "nominal": 30,  "max": 45,  "confidence": "low", "sources": [] },
+                        "r_min": { "nominal": 4, "confidence": "low", "sources": [] } },
+      { "alt_km": 1,    "r_max": { "min": 30, "nominal": 55, "max": 75, "confidence": "low", "sources": [] } },
+      { "alt_km": 5,    "r_max": { "min": 50, "nominal": 90, "max": 130, "confidence": "low", "sources": [] } },
+      { "alt_km": 10,   "r_max": { "min": 70, "nominal": 130, "max": 170, "confidence": "low", "sources": ["opennuclear-tk1-tk2"], "note": "opennuclear-tk1-tk2 的保守估計約 160 km，另有公開來源給 100 km、坊間常引用 200 km——本列的 nominal 落在這個大區間內，但三方分歧本身就是 confidence 定為 low 的理由" } },
+      { "alt_km": 20,   "r_max": { "min": 70, "nominal": 160, "max": 200, "confidence": "low", "sources": ["opennuclear-tk1-tk2"] } }
+    ],
+    "alt_limits": { "min_km": 0.03, "max_km": 24 },
+    "aspect_factor": { "head_on": 1.0, "beam": 0.75, "tail_chase": 0.45 }
+  },
+
+  "guidance": { "type": "active_rf", "requires_illumination": false, "uplink_required": true },
+
+  "sensor": {
+    "antenna_height_m": { "nominal": 6, "min": 4, "max": 12, "confidence": "low" },
+    "r_det_ref_km": { "nominal": 180, "min": 130, "max": 250, "confidence": "low", "sources": ["opennuclear-tk1-tk2"], "note": "與 tk1.json 同一套長白雷達，理由相同：官方宣稱『超過 400 km』是戰略預警等級，不直接採用；本系統較天弓一型晚服役、較天弓三型早，nominal 取兩者之間" },
+    "rcs_ref_m2": 1.0,
+    "elevation_limits_deg": [-2, 78],
+    "azimuth_mask_deg": []
+  },
+
+  "engagement": {
+    "reaction_s": { "nominal": 10, "min": 7, "max": 20, "confidence": "low" },
+    "channels": { "nominal": 8, "min": 4, "max": 16, "confidence": "low" },
+    "assess_s": { "nominal": 7, "confidence": "low" },
+    "avg_missile_speed_mps": { "nominal": 1000, "min": 800, "max": 1360, "confidence": "low", "sources": ["opennuclear-tk1-tk2"], "note": "公開資料稱峰值速度 Mach 4（≈1360 m/s）；本欄位取全程平均，故 nominal 低於峰值，理由與 tk3.json 相同" },
+    "ready_rounds": { "nominal": 20, "confidence": "medium", "sources": ["opennuclear-tk1-tk2"], "note": "固井式垂直發射，opennuclear-tk1-tk2 直接給出多數陣地每處 20 具發射井、東引陣地 32 具——這是井數不是『發射器組數』，井數等於待發彈量的上限。此欄位取 20 具井的常見配置，東引等特殊陣地應在 UI 用『本陣地待發彈』調整為 32" }
+  },
+
+  "targets": ["aircraft", "cruise_missile", "tbm"],
+  "render": { "hue": 178, "z_order": 21 }
+}

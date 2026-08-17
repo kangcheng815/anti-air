@@ -1,0 +1,42 @@
+{
+  "id": "sw2-land",
+  "name_zh": "陸射劍二",
+  "name_en": "Land Sword II",
+  "tier": "short",
+  "role": ["sam"],
+  "platform": "mobile",
+
+  "kinematics": {
+    "$comment": "wikipedia-sky-sword-ii 稱陸射型（無艦射型的助推器）『據報導』有效射程僅 15 km，此為單一數字、非依高度分層的公開資料，故拿來對照本表 1 km 高度那一列（nominal 15），但不足以支撐把 confidence 從 low 提升到 medium——一份『據報導』的單一數字，跟天弓三型那種三個獨立來源互相印證的情況不是同一個可信度量級。艦射型 TC-2N 射程 30 km，考慮到有助推器加速段，量級上與本表 5 km 高度那一列（20 km）方向一致但不能直接套用（不同載台、不同助推器）。",
+    "envelope": [
+      { "alt_km": 0.05, "r_max": { "min": 8,  "nominal": 12, "max": 15, "confidence": "low", "sources": [] },
+                        "r_min": { "nominal": 1.5, "confidence": "low" } },
+      { "alt_km": 1,    "r_max": { "min": 12, "nominal": 15, "max": 20, "confidence": "low", "sources": ["wikipedia-sky-sword-ii"], "note": "wikipedia-sky-sword-ii 稱陸射型有效射程『據報導』15 km；單一來源、非分高度數字，confidence 維持 low" } },
+      { "alt_km": 5,    "r_max": { "min": 15, "nominal": 20, "max": 25, "confidence": "low", "sources": [] } },
+      { "alt_km": 10,   "r_max": { "min": 12, "nominal": 18, "max": 25, "confidence": "low", "sources": [] } }
+    ],
+    "alt_limits": { "min_km": 0.015, "max_km": 15 },
+    "aspect_factor": { "head_on": 1.0, "beam": 0.75, "tail_chase": 0.45 }
+  },
+
+  "guidance": { "type": "active_rf", "requires_illumination": false, "uplink_required": false },
+
+  "sensor": {
+    "antenna_height_m": { "nominal": 4, "min": 3, "max": 8, "confidence": "low" },
+    "r_det_ref_km": { "nominal": 60, "min": 40, "max": 100, "confidence": "low", "sources": [], "note": "公開資料查無陸射劍二車載雷達的探測距離數字，僅知搭配四車編組（雷達車／發射車／指揮車／彈藥車），見 wikipedia-sky-sword-ii；此值為同級短程防空雷達量級推估" },
+    "rcs_ref_m2": 1.0,
+    "elevation_limits_deg": [-5, 60],
+    "azimuth_mask_deg": []
+  },
+
+  "engagement": {
+    "reaction_s": { "nominal": 6, "min": 4, "max": 12, "confidence": "low" },
+    "channels": { "nominal": 4, "min": 2, "max": 8, "confidence": "low" },
+    "assess_s": { "nominal": 5, "confidence": "low" },
+    "avg_missile_speed_mps": { "nominal": 900, "min": 700, "max": 1100, "confidence": "low", "sources": ["wikipedia-sky-sword-ii"], "note": "wikipedia-sky-sword-ii 稱空對空基型 TC-2 峰值 Mach 4（≈1360 m/s）、延程型 TC-2C 達 Mach 6（≈2040 m/s）；陸射型拿掉助推器、彈道也不同，這兩個數字只能當量級參考，不是陸射型本身的數字。此欄位要的是全程平均速度，本來就低於任何峰值" },
+    "ready_rounds": { "nominal": 12, "confidence": "low", "sources": ["wikipedia-sky-sword-ii"], "note": "每輛發射車 4 枚飛彈（wikipedia-sky-sword-ii）；此值假設單車，多車編組時應由使用者在陣地層級用『本陣地待發彈』加總覆寫" }
+  },
+
+  "targets": ["aircraft", "helo", "cruise_missile", "uav"],
+  "render": { "hue": 50, "z_order": 30 }
+}

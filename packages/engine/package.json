@@ -1,0 +1,19 @@
+{
+  "name": "@anti-air/engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "純函式防空幾何引擎：大地線、MVA 場、包絡內插、接戰判定。零 DOM 依賴，可在瀏覽器 Worker 或 Node 批次中執行。",
+  "main": "./src/index.ts",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/pngjs": "^6.0.5",
+    "pngjs": "^7.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

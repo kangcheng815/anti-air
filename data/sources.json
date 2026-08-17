@@ -1,0 +1,182 @@
+{
+  "$comment": "參數來源書目。data/systems/*.json 與 data/threats.json 中每個 Estimate.sources 的字串都必須在此出現。截至 2026-08，多數欄位仍為單一或零來源、confidence 仍為 low —— 這是誠實的起點，不是完成狀態。台灣的實際部署參數（反應時間、通道數、精確射程）本來就不公開，這份書目能做到的是「這個數字是哪家公開媒體/官方頁面說的」，不是「這個數字是真的」。",
+  "reliability_note": "以下依可信度排序，非按字母：官方廠商頁面 > 官方展示/國防部公開資訊 > 主要維基百科（有獨立引註）> 專門情報分析（有註腳的獨立研究，如 opennuclear.org）> 軍事新聞媒體 > 綜合性軍事百科/部落格。多個獨立來源的數字互相印證時，confidence 提升為 medium；單一來源或多來源互相矛盾時，維持 low 並在該欄位的 note 中寫出矛盾。",
+  "sources": [
+    {
+      "id": "ncsist-tk3",
+      "title": "TK III Air Defense Weapon System — NCSIST 官方產品頁",
+      "url": "https://www.ncsist.org.tw/eng/csistdup/products/product.aspx?product_Id=11&catalog=28",
+      "publisher": "國家中山科學研究院（製造商）",
+      "retrieved": "2026-08-17",
+      "note": "官方頁面刻意不公布射程、高度、反應時間 —— 這本身就是資訊：製造商不談的數字，公開來源只能是猜測，不該被當成準確值。頁面只確認了導引方式（中途慣性+雷達上下鏈路、末端微波尋標）與可接戰目標類型。"
+    },
+    {
+      "id": "wikipedia-sky-bow-iii",
+      "title": "Sky Bow III — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Sky_Bow_III",
+      "publisher": "Wikipedia",
+      "retrieved": "2026-08-17",
+      "note": "射程 200 km、速度 Mach 7、量產始於 2014 年。條目本身有獨立引註（非原創研究），但引註來源多為二手媒體報導，非官方規格書。"
+    },
+    {
+      "id": "army-technology-tk3",
+      "title": "Tien-Kung III (Sky Bow III) Surface-to-Air Missile System — Army Technology",
+      "url": "https://www.army-technology.com/projects/tien-kung-iii-sky-bow-iii-surface-to-air-missile-system/",
+      "publisher": "Army Technology（GlobalData 旗下軍事產業媒體）",
+      "retrieved": "2026-08-17",
+      "note": "射程 200 km、最大高度 35,000 m、主動雷達導引 + 慣性中途 + 微波末端尋標。與 wikipedia-sky-bow-iii 的射程數字獨立吻合，是本專案把射程 confidence 從 low 提升到 medium 的主要依據。"
+    },
+    {
+      "id": "opennuclear-tk3-tk4",
+      "title": "Taiwan's Air and Missile Defence. Part 3: Tien Kung-3 and Tien Kung-4 — Open Nuclear Network",
+      "url": "https://platform.opennuclear.org/thoughtroom/quick-takes/taiwans-air-and-missile-defence-part-3-tien-kung-3-and-tien-kung-4",
+      "publisher": "Open Nuclear Network（獨立智庫，有逐項腳註）",
+      "retrieved": "2026-08-17",
+      "note": "本專案目前對天弓三型最詳細的單一來源。官方宣稱最大高度 45 km，但引用台灣《自由時報》報導稱『有效攔截高度』僅 24–26 km —— 這個落差本身就該畫進不確定度區間，而不是只取其中一個數字。速度標 Mach 5.5（與 wikipedia 的 Mach 7 不一致，公開資料本來就有分歧，兩者都保留在 note 中）。每連 8 具發射器。"
+    },
+    {
+      "id": "wikipedia-sky-sword-ii",
+      "title": "Sky Sword II — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Sky_Sword_II",
+      "publisher": "Wikipedia",
+      "retrieved": "2026-08-17",
+      "note": "陸射型（無助推器）有效射程『據報導』僅 15 km；艦射 TC-2N 型 30 km。陸射型每輛發射車 4 枚飛彈；2019 年採購 6 個連、246 枚飛彈。未提供陸射型的雷達偵測距離或反應時間。"
+    },
+    {
+      "id": "wikipedia-oerlikon-gdf",
+      "title": "Oerlikon GDF — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Oerlikon_GDF",
+      "publisher": "Wikipedia",
+      "retrieved": "2026-08-17",
+      "note": "35 mm 雙管砲：有效射程 4,000 m、射高 4,000 m、初速 1,175 m/s（HEI-T 彈種，與 gun35.json 現有數值精確吻合）、射速每管 550 發/分。Super Fledermaus 搜索與追蹤雷達射程均約 15 km —— 本專案據此把雷達偵測距離的標稱值從 20 km 下修到 15 km。"
+    },
+    {
+      "id": "militaryembedded-rcs",
+      "title": "Radar cross section: The measure of stealth — Military Embedded Systems",
+      "url": "https://militaryembedded.com/radar-ew/signal-processing/radar-cross-section-the-measure-of-stealth",
+      "publisher": "Military Embedded Systems（軍用電子產業媒體）",
+      "retrieved": "2026-08-17",
+      "note": "跨機型 RCS 對照表：F-16 5 m²、F-15 25 m²、F/A-18 1 m²、F-35 前向 0.005 m²、F-22 0.0001 m²、戰斧巡弋飛彈 0.5 m²。用來交叉校準 threats.json 的 strike-aircraft 與 lo-fighter 兩類；戰斧的 0.5 m² 恰好落在本專案 cruise-missile 的 max 端，另一份來源給的『< 0.05 m²』落在 min 端附近 —— 兩者的落差本身就是巡弋飛彈 RCS 該給寬區間而非單一數字的證據。"
+    },
+    {
+      "id": "rcs-public-synthesis",
+      "title": "公開 RCS 估計綜合（Wikipedia stealth aircraft 條目交叉比對，多個二手軍事媒體彙整）",
+      "url": "https://www.globalsecurity.org/military/world/stealth-aircraft-rcs.htm",
+      "publisher": "綜合性彙整，非單一權威來源",
+      "retrieved": "2026-08-17",
+      "note": "GlobalSecurity 該頁本身無法直接存取（403），此處代表的是多篇二手來源交叉比對後仍然一致的量級：一般巡弋飛彈量級 O(1 m²)、匿蹤機低於 0.01 m² 量級。confidence 刻意維持 low：這是量級層級的共識，不是可追溯到單一量測的數字。"
+    },
+    {
+      "id": "opennuclear-tk1-tk2",
+      "title": "Taiwan's Air and Missile Defence. Part 1: Tien Kung-1 and Tien Kung-2 — Open Nuclear Network",
+      "url": "https://platform.opennuclear.org/thoughtroom/quick-takes/taiwans-air-and-missile-defence-part-1-tien-kung-1-and-tien-kung-2",
+      "publisher": "Open Nuclear Network（獨立智庫，有逐項腳註），與 opennuclear-tk3-tk4／opennuclear-patriot-tw 同一系列",
+      "retrieved": "2026-08-17",
+      "note": "天弓一型：官方（NCSIST）引用有效射程 5–80 km、有效攔截高度 30 m–23 km，行動式四聯裝發射器，1993 年首座陣地、1996 年前取代美製奈基力士。天弓二型：作者自己估算約 160 km（明講是保守估計，同篇提到坊間常引用 200 km），固井垂直發射，多數陣地 20 具發射井、東引陣地 32 具。兩者共用長白（Chang Bai）雷達，官方宣稱偵測距離『超過 400 km』——本專案認為那是戰略預警等級的數字，不直接當成兩系統的接戰探測距離採用，見 tk1.json／tk2.json 各自的 note。"
+    },
+    {
+      "id": "mda-mpq64-sentinel",
+      "title": "AN/MPQ-64 Sentinel — 多方搜尋結果交叉比對（missiledefenseadvocacy.org、radartutorial.eu 等）",
+      "url": "https://www.missiledefenseadvocacy.org/defense-systems/an-mpq-64-sentinel/",
+      "publisher": "Missile Defense Advocacy Alliance 等軍事技術站",
+      "retrieved": "2026-08-17",
+      "note": "復仇者飛彈車在現代化編組中依賴外部聯網的哨兵（Sentinel）雷達延伸偵獲距離：基礎型 40 km，升級型（2006 年起）75 km，可同時追蹤 50+ 目標。本專案的 avenger.json 沒有把這份聯網感測力算進車輛本身的 r_det_ref_km——那是外部感測器，該用 C2『全島共享軌跡』模式搭配另一個獨立陣地表達，不是灌大復仇者自己的欄位。"
+    },
+    {
+      "id": "navweaps-phalanx",
+      "title": "USA 20 mm Phalanx Close-in Weapon System (CIWS) — NavWeaps",
+      "url": "https://www.navweaps.com/Weapons/WNUS_Phalanx.php",
+      "publisher": "NavWeaps（海軍武器規格資料庫，常被學術與軍事媒體引用，非官方但資料嚴謹）",
+      "retrieved": "2026-08-17",
+      "note": "M61A1 20 mm 砲，射速現代型可達 4,500 發/分、初速 1,100 m/s、彈艙 1,550 發（Block 1A+）、有效射程約 1,486 m、最大射程約 5,500 m。搜索雷達另有來源給 10 海浬（約 18.5 km），與『5–10 km 有效接戰距離』並存，本專案在 phalanx.json 中兩者都保留並說明差異。"
+    },
+    {
+      "id": "twz-taiwan-land-phalanx",
+      "title": "Taiwan Reveals Land-Based Variant Of Naval Point Defense Missile System To Guard Key Sites — The War Zone",
+      "url": "https://www.twz.com/29405/taiwan-reveals-land-based-variant-of-naval-point-defense-missile-system-to-guard-key-sites",
+      "publisher": "The War Zone（軍事新聞媒體，長期追蹤台灣防務議題）",
+      "retrieved": "2026-08-17",
+      "note": "台灣目前的陸基方陣是單一具海軍除役艦艇拆下、移交空軍駐防新北樂山雷達站的個案，不是普遍部署的制式陸基型號；另有中科院受委託研議的機場點防禦陸基方陣案，截至查證時仍在研議階段。phalanx.json 收錄這個系統代表『這一類武器如果部署會怎樣』的推理用途，見 DESIGN.md §12.3，不宣稱台灣已經普遍擁有陸基方陣。"
+    },
+    {
+      "id": "mda-sm2",
+      "title": "Standard Missile-2 (SM-2) — Missile Defense Advocacy Alliance",
+      "url": "https://www.missiledefenseadvocacy.org/defense-systems/standard-missile-2-sm-2/",
+      "publisher": "Missile Defense Advocacy Alliance",
+      "retrieved": "2026-08-17",
+      "note": "射程 90 海浬（約 167 km）、高度上限 65,000 呎（約 19.8 km）、速度 Mach 3 以上。台灣海軍成功級、紀德（基隆）級艦艇搭載，NCSIST 已接手在地維護與火箭發動機生產——公開資料無法量化在地維護對實際性能的影響，本表沿用美製規格書等級數字，未做額外折減。"
+    },
+    {
+      "id": "globalsecurity-yj12",
+      "title": "YJ-12 / Yingzhe-12 / Eagle Strike 12 Anti-Shipping Missile — GlobalSecurity.org（經搜尋引擎摘要取得）",
+      "url": "https://www.globalsecurity.org/military/world/china/yj-12.htm",
+      "publisher": "GlobalSecurity.org",
+      "retrieved": "2026-08-17",
+      "note": "巡航段 Mach 1.5、掠海高度 12–15 m，末段衝刺可達 Mach 4（4,900 km/h）；射程公開估計 150–500 km（依變體與射擊剖面差異極大）；彈體 2–2.5 噸、彈頭 500 kg。頁面本身於本次查證時未直接存取，數字轉引自搜尋引擎摘要。查無 RCS 數字。"
+    },
+    {
+      "id": "globalsecurity-df15",
+      "title": "DF-15 [CSS-6 / M-9] — GlobalSecurity.org（經搜尋引擎摘要取得）",
+      "url": "https://www.globalsecurity.org/wmd/world/china/df-15.htm",
+      "publisher": "GlobalSecurity.org",
+      "retrieved": "2026-08-17",
+      "note": "彈道頂點（apogee）約 100 km、末段再入終端速度『Mach 6 以上』。這兩個數字都是末段/彈道幾何特徵，不是中段速度——本專案的 df-15 威脅剖面因此仍對中段速度標低信心度，只有 typical_altitude_m（取頂點）與末段速度有稍高信心度。"
+    },
+    {
+      "id": "opennuclear-patriot-tw",
+      "title": "Taiwan's Air and Missile Defence. Part 2: Patriot PAC-2 and PAC-3 — Open Nuclear Network",
+      "url": "https://platform.opennuclear.org/thoughtroom/quick-takes/taiwans-air-and-missile-defence-part-2-patriot-pac-2-and-pac-3",
+      "publisher": "Open Nuclear Network（獨立智庫，有逐項腳註）",
+      "retrieved": "2026-08-17",
+      "note": "本專案對台灣愛國者部署最詳細的單一來源，與 opennuclear-tk3-tk4 同一系列。PAC-3 CRI 對空中目標最大射程 70 km、最大攔截高度 24.4 km；對彈道飛彈目標則是完全不同的包絡（攔截距離約 35 km、攔截高度 20 km）——本專案的運動學表只能依高度索引、無法區分目標類別，因此只採用對空中目標的數字，彈道飛彈的攔截包絡未被建模，這是已知簡化。每具 PAC-3 CRI 發射器可裝 16 枚、PAC-3 MSE（彈體較大）可裝 12 枚。台灣 9 個愛國者連，平均每連約 20 枚 PAC-2 GEM ＋ 42 枚 PAC-3 CRI，實際比例依駐地與任務不同而異。PAC-2 GEM 本身只查到『60 英里以上（約 97 km）』的粗略數字（見 nasm-pac2-gem）。"
+    },
+    {
+      "id": "nasm-pac2-gem",
+      "title": "Model, Missile, Patriot Advanced Capability-2 (PAC-2) (GEM) — Smithsonian National Air and Space Museum",
+      "url": "https://airandspace.si.edu/collection-objects/model-missile-patriot-advanced-capability-2-pac-2-gem/nasm_A20070026000",
+      "publisher": "Smithsonian 國家航空太空博物館（官方展示品說明）",
+      "retrieved": "2026-08-17",
+      "note": "官方博物館展示說明稱射程『60 英里以上』（約 97 km），未指定在哪個高度、對哪種目標。頁面本身於本次查證時無法直接存取（403），數字轉引自搜尋引擎摘要，可信度因此打了折扣，但博物館展示品說明仍屬機構性質來源，優於一般軍事部落格。"
+    },
+    {
+      "id": "missilery-patriot",
+      "title": "Anti-aircraft missile system Patriot (MIM-104A) — Missilery.info",
+      "url": "https://en.missilery.info/missile/patriot",
+      "publisher": "Missilery.info（俄語軍事技術站英譯版，逐項規格表）",
+      "retrieved": "2026-08-17",
+      "note": "給出的是基礎型 MIM-104A 的規格表，非專指 PAC-2 或 PAC-3，但可作量級交叉核對：最大射程 80 km、最大攔截高度 24 km、速度 Mach 3–5——與 opennuclear-patriot-tw 給的 PAC-3 CRI 對空數字（70 km / 24.4 km）同一量級，互相印證。雷達偵測距離明確依高度分層：低空（50–100 m）僅 35–50 km，高空（1,000–10,000 m）可達 170 km——這正是本專案『雷達地平線另外處理、r_det_ref_km 只代表視線無遮蔽時的探測力』這個架構分工的獨立佐證。同時提到系統『持續押送 8 個目標』，是 channels 欄位其中一個來源。"
+    },
+    {
+      "id": "mda-mpq5365",
+      "title": "AN/MPQ-53/65 Radar — Missile Defense Advocacy Alliance",
+      "url": "https://www.missiledefenseadvocacy.org/defense-systems/anmpq-5365-radar/",
+      "publisher": "Missile Defense Advocacy Alliance（倡議型智庫，非中立學術機構，但常被其他來源引用）",
+      "retrieved": "2026-08-17",
+      "note": "AN/MPQ-53 宣稱距離約 100 km（一說可達 170 km）、較新的 AN/MPQ-65 優於 150 km；可同時追蹤 100+ 目標。本專案取 150 km 當標稱、100–170 km 當區間。"
+    },
+    {
+      "id": "search-mpq53-sector",
+      "title": "AN/MPQ-53 搜索/追蹤扇區角度（多方搜尋結果交叉比對：radartutorial.eu 等）",
+      "url": "https://www.radartutorial.eu/19.kartei/06.missile/karte003.en.html",
+      "publisher": "Radartutorial.eu（雷達技術教學網站）",
+      "retrieved": "2026-08-17",
+      "note": "AN/MPQ-53 搜索扇區 90°、追蹤扇區 120°（左右各 60°）——愛國者的相位陣列雷達只能涵蓋固定方位扇區，需朝向預期威脅方向部署，不像天弓三型那樣視為全周界。這是真實存在、影響戰術部署的限制，但本專案目前的陣地資料模型沒有『雷達朝向』欄位（Site 只有經緯度），azimuth_mask_deg 又是相對真北的絕對角度、不會隨陣地座標自動朝向威脅方向——因此本專案**沒有**在 patriot-pac2 / patriot-pac3 的資料中套用這個扇區限制，寧可讓涵蓋圖過度樂觀地假設全周界，也不要套一個固定方位角、在放在不同座標時卻代表不同的實際朝向。這是已知的資料模型缺口，寫在 DESIGN.md。"
+    }
+  ],
+  "terrain": {
+    "id": "aws-terrain-tiles",
+    "title": "Terrain Tiles on AWS Open Data",
+    "url": "https://registry.opendata.aws/terrain-tiles/",
+    "encoding": "terrarium",
+    "note": "SRTM / NED 等公開 DEM 之合併產物。本專案使用 z11（台灣緯度約 70 m/px）。取得方式見 tools/fetch-terrain.mjs。",
+    "verified": "以玉山（3952 m）、雪山（3886 m）等已知山峰對照，70 m 網格下低估 20–45 m，屬預期範圍；海域測深值一律夾到 0。"
+  },
+  "todo": [
+    "反應時間 / 通道數：任何國家都不公開這兩個數字，公開來源查無可信引用，維持推估與寬區間",
+    "陣地層級待發彈量（發射架數）：屬編制而非武器性能，本來就不該有公開的『標準答案』，由使用者在 UI 自行輸入",
+    "陸射劍二的雷達偵測距離：查無公開數字，仍是量級推估（35 快砲已用 wikipedia-oerlikon-gdf 的 Super Fledermaus 規格解決）",
+    "威脅剖面中 UAV／直升機／戰術彈道飛彈的 RCS：查無可信公開數字（UAV 僅學術論文給了遠小於 MALE 級機體的量級，helo／tbm 完全查無）",
+    "天弓三型的射控雷達探測距離（r_det_ref_km）：NCSIST 官方頁面不公開，250 km 仍是同級 AESA 雷達的量級推估",
+    "DEM：SRTM 3-arcsec（NASA，公有領域）／內政部 20m DTM（開放資料授權，需標示）"
+  ]
+}

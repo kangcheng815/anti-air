@@ -1,0 +1,35 @@
+{
+  "id": "stinger",
+  "name_zh": "刺針飛彈（單兵）",
+  "name_en": "FIM-92 Stinger (MANPADS)",
+  "tier": "point",
+  "role": ["sam"],
+  "platform": "mobile",
+
+  "kinematics": {
+    "$comment": "公開來源本身對射程分歧達近兩倍：一份泛用來源給『8 km』，另一份給『15,700 呎（約 4.8 km）』；攔截高度上限則較一致，約 3.8 km。這裡取寬區間表達分歧，而不是挑一個看起來精確的數字。單兵刺針沒有助推段以外的巡航動力，射程受限於彈體能量與紅外線導引頭的鎖定/追蹤能力，跟本表其他系統的『雷達地平線先咬死』邏輯不同——低空低速目標反而是它的設計場景，因此本表不像其他系統那樣在低空大幅折減。sensor 刻意設為 null：單兵目視/紅外線鎖定，沒有自己的雷達。在 UI 的『C2：各自為政』模式下，這代表刺針永遠偵獲不到任何目標（sensorsFor 對沒有 sensor 的陣地回傳空清單）——這不是 bug，是感測器—射手分離要演示的重點：刺針要打得到東西，得切到『C2：全島共享軌跡』，靠其他有雷達的陣地供軌。",
+    "envelope": [
+      { "alt_km": 0.03, "r_max": { "min": 3.5, "nominal": 4.8, "max": 8, "confidence": "low", "sources": [] },
+                        "r_min": { "nominal": 0.2, "confidence": "low", "sources": [] } },
+      { "alt_km": 1,    "r_max": { "min": 3, "nominal": 4.5, "max": 7, "confidence": "low", "sources": [] } },
+      { "alt_km": 3.8,  "r_max": { "min": 2, "nominal": 3.5, "max": 5, "confidence": "low", "sources": [] } }
+    ],
+    "alt_limits": { "min_km": 0.005, "max_km": 3.8 },
+    "aspect_factor": { "head_on": 0.7, "beam": 0.85, "tail_chase": 1.0 }
+  },
+
+  "guidance": { "type": "ir", "requires_illumination": true, "uplink_required": false },
+
+  "sensor": null,
+
+  "engagement": {
+    "reaction_s": { "nominal": 6, "min": 3, "max": 12, "confidence": "low", "note": "單兵目視/紅外線鎖定，無雷達預警，反應時間高度取決於操作員個人與能見度，公開資料查無標準數字" },
+    "channels": { "nominal": 1, "confidence": "high", "note": "單兵單發射具，物理上同時只能鎖定接戰一個目標，結構性事實非經驗推估" },
+    "assess_s": { "nominal": 3, "confidence": "low" },
+    "avg_missile_speed_mps": { "nominal": 650, "min": 500, "max": 870, "confidence": "low", "note": "公開來源峰值速度 Mach 2.2–2.54（約 750–870 m/s）；本欄位取全程平均，理由與其他飛彈系統一致" },
+    "ready_rounds": { "nominal": 1, "confidence": "high", "note": "單兵單發射具僅攜行一枚待射彈；再裝填後可再射，但那是另一次接戰，不算進待發彈——多枚刺針應在陣地層級以多個陣地表示，而不是灌大這個數字" }
+  },
+
+  "targets": ["aircraft", "helo", "uav", "cruise_missile"],
+  "render": { "hue": 15, "z_order": 55 }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "avenger",
+  "name_zh": "復仇者飛彈車",
+  "name_en": "AN/TWQ-1 Avenger",
+  "tier": "point",
+  "role": ["sam"],
+  "platform": "mobile",
+
+  "kinematics": {
+    "$comment": "彈體本身就是刺針飛彈（見 stinger.json），數字理由相同。復仇者比單兵型多出的是車載光電/紅外線瞄準儀，能在移動中鎖定，但飛彈本身的運動學不變，故射程表與 stinger.json 一致。",
+    "envelope": [
+      { "alt_km": 0.03, "r_max": { "min": 3.5, "nominal": 4.8, "max": 8, "confidence": "low", "sources": [] },
+                        "r_min": { "nominal": 0.2, "confidence": "low", "sources": [] } },
+      { "alt_km": 1,    "r_max": { "min": 3, "nominal": 4.5, "max": 7, "confidence": "low", "sources": [] } },
+      { "alt_km": 3.8,  "r_max": { "min": 2, "nominal": 3.5, "max": 5, "confidence": "low", "sources": [] } }
+    ],
+    "alt_limits": { "min_km": 0.005, "max_km": 3.8 },
+    "aspect_factor": { "head_on": 0.7, "beam": 0.85, "tail_chase": 1.0 }
+  },
+
+  "guidance": { "type": "ir", "requires_illumination": true, "uplink_required": false },
+
+  "sensor": {
+    "antenna_height_m": { "nominal": 2.5, "min": 2, "max": 3, "confidence": "low", "note": "車頂光電/紅外線感測器高度，非雷達" },
+    "r_det_ref_km": { "nominal": 8, "min": 5, "max": 12, "confidence": "low", "sources": [], "note": "車載的是光電/紅外線瞄準儀，不是雷達，探測距離受能見度、天候影響極大，公開資料查無標準數字。真正大幅延伸偵獲距離的是外部聯網的 AN/MPQ-64 哨兵雷達（40 km，升級型 75 km，見 mda-mpq64-sentinel）——本系統未把那份聯網感測力算進自己的 r_det_ref_km，使用者若要呈現聯網後的偵獲範圍，應把復仇者的 C2 模式切到『全島共享軌跡』，並另外放置一個具備長程雷達的陣地供軌，而不是灌大這個欄位去代表一個本系統車上其實沒有的雷達" },
+    "rcs_ref_m2": 1.0,
+    "elevation_limits_deg": [0, 60],
+    "azimuth_mask_deg": []
+  },
+
+  "engagement": {
+    "reaction_s": { "nominal": 8, "min": 5, "max": 15, "confidence": "low" },
+    "channels": { "nominal": 1, "confidence": "high", "note": "車上兩具四聯裝發射器共用同一套光電瞄準儀，同時只能鎖定接戰一個目標，結構性事實" },
+    "assess_s": { "nominal": 4, "confidence": "low" },
+    "avg_missile_speed_mps": { "nominal": 650, "min": 500, "max": 870, "confidence": "low", "note": "與 stinger.json 相同：公開峰值速度 Mach 2.2–2.54，本欄位取全程平均" },
+    "ready_rounds": { "nominal": 8, "confidence": "medium", "sources": [], "note": "車上兩具四聯裝發射器，共 8 枚待射彈——這是復仇者車輛結構的公開常識（兩側各一具四聯裝），非單一引註來源，但多篇獨立描述一致，故給 medium" }
+  },
+
+  "targets": ["aircraft", "helo", "uav", "cruise_missile"],
+  "render": { "hue": 30, "z_order": 53 }
+}

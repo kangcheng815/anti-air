@@ -1,0 +1,162 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/anti-air/data/schema/system.schema.json",
+  "title": "防空系統參數",
+  "description": "所有數值皆為公開推估。任何 scalar 一律使用 Estimate 結構表達不確定度，禁止裸數字。",
+  "type": "object",
+  "required": ["id", "name_zh", "tier", "role", "kinematics", "guidance", "engagement"],
+  "additionalProperties": false,
+
+  "definitions": {
+    "Estimate": {
+      "description": "帶不確定度的量。UI 的保守/標稱/樂觀切換直接讀 min/nominal/max。",
+      "type": "object",
+      "required": ["nominal", "confidence"],
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "number" },
+        "nominal": { "type": "number" },
+        "max": { "type": "number" },
+        "confidence": { "enum": ["low", "medium", "high"] },
+        "sources": {
+          "type": "array",
+          "items": { "type": "string", "description": "sources.json 的 id" }
+        },
+        "note": { "type": "string" }
+      }
+    }
+  },
+
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9_-]+$" },
+    "name_zh": { "type": "string" },
+    "name_en": { "type": "string" },
+
+    "tier": {
+      "description": "分層。決定地圖色相：high=藍 / medium=綠 / short=黃 / point=紅",
+      "enum": ["high", "medium", "short", "point"]
+    },
+    "role": {
+      "type": "array",
+      "items": { "enum": ["sam", "abm", "gun", "ciws", "sensor_only"] }
+    },
+    "platform": { "enum": ["fixed", "semi-mobile", "mobile", "naval"] },
+
+    "kinematics": {
+      "description": "運動學包絡。以高度為索引的插值表，同時給出最小與最大射程。",
+      "type": "object",
+      "required": ["envelope", "alt_limits"],
+      "additionalProperties": false,
+      "properties": {
+        "$comment": { "type": "string" },
+        "envelope": {
+          "type": "array",
+          "minItems": 2,
+          "description": "依 alt_km 遞增排序。r_max/r_min 單位 km。中間值線性內插，兩端不外插（夾在端點）。",
+          "items": {
+            "type": "object",
+            "required": ["alt_km", "r_max"],
+            "additionalProperties": false,
+            "properties": {
+              "alt_km": { "type": "number" },
+              "r_max": { "$ref": "#/definitions/Estimate" },
+              "r_min": { "$ref": "#/definitions/Estimate" }
+            }
+          }
+        },
+        "alt_limits": {
+          "type": "object",
+          "required": ["min_km", "max_km"],
+          "properties": {
+            "min_km": { "type": "number" },
+            "max_km": { "type": "number" }
+          }
+        },
+        "aspect_factor": {
+          "description": "接近幾何對有效射程的乘數。迎頭=1，尾追大幅縮短。粗略但誠實。",
+          "type": "object",
+          "properties": {
+            "head_on": { "type": "number", "default": 1.0 },
+            "beam": { "type": "number", "default": 0.75 },
+            "tail_chase": { "type": "number", "default": 0.45 }
+          }
+        }
+      }
+    },
+
+    "guidance": {
+      "description": "決定發射端是否需要全程地形 LOS。active 只需發射瞬間，sarh/clos 需全程照射。",
+      "type": "object",
+      "required": ["type", "requires_illumination"],
+      "properties": {
+        "type": { "enum": ["active_rf", "sarh", "trackvialaunch", "clos", "ir", "beam_riding", "ballistic"] },
+        "requires_illumination": { "type": "boolean" },
+        "uplink_required": { "type": "boolean", "default": false }
+      }
+    },
+
+    "sensor": {
+      "description": "有機感測器。感測器—射手分離：可為 null，代表完全依賴外部 C2 群組供軌。",
+      "type": ["object", "null"],
+      "properties": {
+        "antenna_height_m": { "$ref": "#/definitions/Estimate" },
+        "r_det_ref_km": { "$ref": "#/definitions/Estimate" },
+        "rcs_ref_m2": { "type": "number", "default": 1.0 },
+        "elevation_limits_deg": {
+          "description": "俯仰掃描界限。上界造成頭頂『靜默錐』——地圖上會看見陣地正上方的空洞。",
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "azimuth_mask_deg": {
+          "description": "可掃描方位扇區 [[from,to],...]。旋轉式雷達留空代表 360°。",
+          "type": "array",
+          "items": { "type": "array", "items": { "type": "number" } }
+        }
+      }
+    },
+
+    "engagement": {
+      "type": "object",
+      "required": ["reaction_s", "channels"],
+      "properties": {
+        "reaction_s": { "$ref": "#/definitions/Estimate" },
+        "channels": {
+          "description": "同時接戰通道數。射擊機會的硬上限。",
+          "$ref": "#/definitions/Estimate"
+        },
+        "assess_s": {
+          "description": "兩次射擊之間的評估間隔（看第一發有沒有中）。",
+          "$ref": "#/definitions/Estimate"
+        },
+        "avg_missile_speed_mps": {
+          "description": "用於估算飛行時間 t_flyout ≈ r / v。粗糙，但比忽略飛行時間好得多。",
+          "$ref": "#/definitions/Estimate"
+        },
+        "ready_rounds": {
+          "description": "待發彈量（發射架上、不需再裝填）。飽和攻擊分析用。火砲以「發」計。",
+          "$ref": "#/definitions/Estimate"
+        },
+        "rounds_per_engagement": {
+          "description": "每次接戰消耗的彈數。飛彈預設 1；火砲為一次連射的發數，用來把以「發」計的 ready_rounds 換算成接戰次數。省略時視為 1。",
+          "$ref": "#/definitions/Estimate"
+        }
+      }
+    },
+
+    "targets": {
+      "description": "可接戰目標型別。決定該系統對某威脅是否參與計算。",
+      "type": "array",
+      "items": { "enum": ["aircraft", "helo", "uav", "cruise_missile", "tbm", "arm", "rocket"] }
+    },
+
+    "render": {
+      "type": "object",
+      "properties": {
+        "hue": { "type": "number", "minimum": 0, "maximum": 360 },
+        "z_order": { "type": "integer" }
+      }
+    }
+  }
+}

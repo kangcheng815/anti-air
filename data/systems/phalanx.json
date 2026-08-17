@@ -1,0 +1,43 @@
+{
+  "id": "phalanx",
+  "name_zh": "方陣快砲（陸基）",
+  "name_en": "Phalanx CIWS (land-based)",
+  "tier": "point",
+  "role": ["gun", "ciws"],
+  "platform": "fixed",
+
+  "kinematics": {
+    "$comment": "本系統代表的是台灣目前實際存在的陸基方陣：一具海軍除役艦艇拆下、移交空軍駐防新北樂山雷達站的方陣快砲（見 twz-taiwan-land-phalanx）——不是普遍部署的制式陸基型號。台灣另有一個為機場點防禦而委由中科院修改陸基型的計畫，但截至查證時仍在研議/未定案階段，尚未量產部署。把這個系統放進目錄，代表的是『這一類武器如果部署會怎樣』的推理（見 DESIGN.md §12.3），不是宣稱台灣已經普遍擁有陸基方陣。射程數字取自艦載規格書（navweaps-phalanx）：有效射程約 1.5 km、最大射程約 5.5 km，射高上限未見公開數字，沿用同量級的 35 快砲（見 gun35.json）之 4 km 上限。",
+    "envelope": [
+      { "alt_km": 0.05, "r_max": { "min": 1.0, "nominal": 1.5, "max": 3.0, "confidence": "medium", "sources": ["navweaps-phalanx"], "note": "1.5 km 是官方等級規格書（NavWeaps 轉引）的『有效射程』；max 3.0 反映最大射程數字（5.5 km）打了折扣，因為那是對軟目標的極限距離，不是對飛彈的有效接戰距離" },
+                        "r_min": { "nominal": 0.05, "confidence": "low", "sources": [] } },
+      { "alt_km": 1,    "r_max": { "min": 0.8, "nominal": 1.3, "max": 2.5, "confidence": "low", "sources": [] } },
+      { "alt_km": 3,    "r_max": { "min": 0.3, "nominal": 0.7, "max": 1.5, "confidence": "low", "sources": [] } },
+      { "alt_km": 4,    "r_max": { "min": 0,   "nominal": 0.3, "max": 1.0, "confidence": "low", "sources": [] } }
+    ],
+    "alt_limits": { "min_km": 0, "max_km": 4 },
+    "aspect_factor": { "head_on": 1.0, "beam": 0.9, "tail_chase": 0.6 }
+  },
+
+  "guidance": { "type": "ballistic", "requires_illumination": true, "uplink_required": false },
+
+  "sensor": {
+    "antenna_height_m": { "nominal": 4, "confidence": "low" },
+    "r_det_ref_km": { "nominal": 15, "min": 10, "max": 19, "confidence": "medium", "sources": ["navweaps-phalanx"], "note": "Ku 波段搜索雷達，一份來源給 10 海浬（約 18.5 km）搜索距離，另一份給 5–10 km『有效接戰距離』——後者更接近本欄位『能餵給射手一發』的定義，前者較接近純搜索上限，本欄位取中間偏高值" },
+    "rcs_ref_m2": 1.0,
+    "elevation_limits_deg": [-10, 85],
+    "azimuth_mask_deg": []
+  },
+
+  "engagement": {
+    "reaction_s": { "nominal": 3, "min": 2, "max": 6, "confidence": "low", "note": "方陣快砲以自動化、極短反應時間著稱（近迫武器系統的設計目的就是留給人的決策時間趨近於零），但公開資料未給精確秒數，此值為同類系統的量級推估" },
+    "channels": { "nominal": 1, "confidence": "high", "note": "單一砲塔、單一射控雷達，物理上同時只能鎖定接戰一個目標，結構性事實" },
+    "assess_s": { "nominal": 1, "confidence": "low" },
+    "avg_missile_speed_mps": { "nominal": 1100, "confidence": "high", "sources": ["navweaps-phalanx"], "note": "M61A1 20 mm 砲口初速 1,100 m/s（NavWeaps 規格書），理由與 gun35.json 相同：砲彈不像飛彈那樣持續加速後減速，初速當全程速度是合理近似" },
+    "ready_rounds": { "nominal": 1550, "confidence": "high", "sources": ["navweaps-phalanx"], "note": "Block 1A 以後的彈艙容量 1,550 發，規格書數字" },
+    "rounds_per_engagement": { "nominal": 60, "min": 40, "max": 100, "confidence": "low", "note": "現代型射速可達每分鐘 4,500 發（75 發/秒），一次接戰的連射秒數公開資料無定值，取與 gun35.json 同量級的方法論估計；1,550 發約合 15–39 次接戰" }
+  },
+
+  "targets": ["aircraft", "cruise_missile", "uav", "rocket"],
+  "render": { "hue": 340, "z_order": 51 }
+}

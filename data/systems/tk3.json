@@ -1,0 +1,43 @@
+{
+  "id": "tk3",
+  "name_zh": "天弓三型",
+  "name_en": "Tien Kung III",
+  "tier": "high",
+  "role": ["sam", "abm"],
+  "platform": "semi-mobile",
+
+  "kinematics": {
+    "$comment": "本表是**純運動學**可及距離：飛彈在該高度靠自身能量能飛到多遠。不得把偵測或地平線限制寫進來——那由 MVA / 地平線那條鏈處理，寫進來會變成雙重扣減。低空數值受稠密大氣阻力主導，故遠小於高空標稱值。alt_limits.max_km=45 對應官方宣稱的最大攔截高度（見 opennuclear-tk3-tk4），但同一份來源引述台灣《自由時報》報導的『有效攔截高度』僅 24–26 km——公開資料本身就有這個落差，本專案取官方數字當硬上限（更保守地說是更寬鬆的上限），是刻意選擇讓涵蓋圖呈現『理論上限』而非『實務估計』，兩者的差距本身就是一種不確定度，使用者應該知道。",
+    "envelope": [
+      { "alt_km": 0.1,  "r_max": { "min": 45, "nominal": 70,  "max": 90,  "confidence": "low", "sources": [], "note": "海平面附近阻力主導；實務上此高度多半是地平線先咬死，而非運動學。無公開來源直接給出此高度的射程，屬工程推估" },
+                        "r_min": { "nominal": 5, "confidence": "low", "sources": [] } },
+      { "alt_km": 1,    "r_max": { "min": 80, "nominal": 110, "max": 140, "confidence": "low", "sources": [] } },
+      { "alt_km": 5,    "r_max": { "min": 120,"nominal": 150, "max": 180, "confidence": "low", "sources": [] } },
+      { "alt_km": 10,   "r_max": { "min": 150,"nominal": 185, "max": 200, "confidence": "low", "sources": [] } },
+      { "alt_km": 20,   "r_max": { "min": 150,"nominal": 200, "max": 200, "confidence": "medium", "sources": ["wikipedia-sky-bow-iii", "army-technology-tk3"], "note": "200 km 是三個各自獨立的公開來源（Wikipedia、Army Technology、GlobalSecurity 系搜尋結果）互相吻合的數字，指的是高空最佳條件下的最大射程，故 confidence 定為 medium；仍非官方規格書數字，NCSIST 官方頁面本身不公布射程（見 ncsist-tk3）" } }
+    ],
+    "alt_limits": { "min_km": 0.05, "max_km": 45 },
+    "aspect_factor": { "head_on": 1.0, "beam": 0.75, "tail_chase": 0.45 }
+  },
+
+  "guidance": { "type": "active_rf", "requires_illumination": false, "uplink_required": true },
+
+  "sensor": {
+    "antenna_height_m": { "nominal": 8, "min": 5, "max": 30, "confidence": "low", "note": "山區陣地實際天線海拔由 DEM 決定，此值為相對地面架高" },
+    "r_det_ref_km": { "nominal": 250, "min": 200, "max": 450, "confidence": "low", "sources": [], "note": "公開資料查無天弓三型雷達對 RCS=1 m² 目標的探測距離數字（NCSIST 官方頁面只確認具備多目標搜索追蹤能力，見 ncsist-tk3）。此值為同級 AESA 防空雷達的合理量級推估，非量測值或官方數字" },
+    "rcs_ref_m2": 1.0,
+    "elevation_limits_deg": [-2, 70],
+    "azimuth_mask_deg": []
+  },
+
+  "engagement": {
+    "reaction_s": { "nominal": 10, "min": 6, "max": 20, "confidence": "low" },
+    "channels": { "nominal": 12, "min": 6, "max": 24, "confidence": "low" },
+    "assess_s": { "nominal": 8, "confidence": "low" },
+    "avg_missile_speed_mps": { "nominal": 1200, "min": 900, "max": 1500, "confidence": "low", "sources": ["wikipedia-sky-bow-iii", "opennuclear-tk3-tk4"], "note": "刻意小於公開來源引用的峰值速度（Wikipedia／Army Technology 稱 Mach 7≈2400 m/s；opennuclear-tk3-tk4 引官方資料稱 Mach 5.5≈1870 m/s，兩者本身就不一致）。這裡要的是全程飛行時間估算 t_flyout≈r/v 用的『平均』速度，飛彈助推段後會持續減速，尤其在遠距/高空攔截；直接套峰值速度會系統性低估飛行時間，等於高估防守方的反應餘裕" },
+    "ready_rounds": { "nominal": 4, "confidence": "low", "sources": ["opennuclear-tk3-tk4"], "note": "每發射箱；一個連的總數需在陣地層級設定（UI『本陣地待發彈』）。opennuclear-tk3-tk4 提到每連 8 具發射器，但未給出每具發射器的飛彈數，故無法從中直接反推陣地總量" }
+  },
+
+  "targets": ["aircraft", "cruise_missile", "tbm", "uav"],
+  "render": { "hue": 210, "z_order": 10 }
+}

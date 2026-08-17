@@ -1,0 +1,43 @@
+{
+  "id": "sm2",
+  "name_zh": "標準二型（艦載）",
+  "name_en": "Standard Missile-2 (Ship-Launched)",
+  "tier": "medium",
+  "role": ["sam"],
+  "platform": "naval",
+
+  "kinematics": {
+    "$comment": "公開規格：90 海浬（約 167 km）、65,000 呎（約 19.8 km）高度上限、速度 Mach 3+。台灣海軍成功級（派里級衍生）與紀德級（左營／基隆級）巡防艦／驅逐艦搭載，NCSIST 已接手在地維護、生產替換火箭發動機——這代表台灣的實際 SM-2 性能可能因批次、維護、發動機翻新程度而與美製原廠規格有落差，公開資料無法量化這個落差，本表沿用美製規格書等級數字。",
+    "envelope": [
+      { "alt_km": 0.1,  "r_max": { "min": 20, "nominal": 35,  "max": 50,  "confidence": "low", "sources": [], "note": "海平面附近阻力主導，實務上多半是地平線先咬死；無公開來源給此高度數字，屬工程推估" },
+                        "r_min": { "nominal": 4, "confidence": "low", "sources": [] } },
+      { "alt_km": 1,    "r_max": { "min": 50, "nominal": 80, "max": 110, "confidence": "low", "sources": [] } },
+      { "alt_km": 5,    "r_max": { "min": 90, "nominal": 130, "max": 155, "confidence": "low", "sources": [] } },
+      { "alt_km": 10,   "r_max": { "min": 110, "nominal": 155, "max": 167, "confidence": "medium", "sources": ["mda-sm2"], "note": "接近官方規格的 167 km（90 海浬）上限" } },
+      { "alt_km": 19.8, "r_max": { "min": 100, "nominal": 150, "max": 167, "confidence": "medium", "sources": ["mda-sm2"], "note": "接近高度上限，射程收縮" } }
+    ],
+    "alt_limits": { "min_km": 0.03, "max_km": 19.8 },
+    "aspect_factor": { "head_on": 1.0, "beam": 0.75, "tail_chase": 0.45 }
+  },
+
+  "guidance": { "type": "sarh", "requires_illumination": true, "uplink_required": false },
+
+  "sensor": {
+    "antenna_height_m": { "nominal": 15, "min": 10, "max": 25, "confidence": "low", "note": "艦體桅杆高度，遠高於陸基系統，讓艦載雷達的地平線天然比同等陸基系統遠——這是海基平台的固有優勢，不是資料錯誤" },
+    "r_det_ref_km": { "nominal": 200, "min": 150, "max": 280, "confidence": "low", "sources": [], "note": "成功級的 AN/SPS-49(V)5 對空搜索雷達官方宣稱最大搜索距離 460 km，但那是戰略等級的 2D 長程搜索雷達，跟 tk1.json／tk2.json 的長白雷達是同一種『搜索距離遠大於接戰探測力』的情況，不直接採用；本欄位取遠低於搜索上限、但仍高於陸基同級系統的量級推估，理由是艦體桅杆高度帶來的地平線優勢已經另外算在 antenna_height_m" },
+    "rcs_ref_m2": 1.0,
+    "elevation_limits_deg": [-3, 83],
+    "azimuth_mask_deg": []
+  },
+
+  "engagement": {
+    "reaction_s": { "nominal": 10, "min": 6, "max": 20, "confidence": "low" },
+    "channels": { "nominal": 4, "min": 2, "max": 8, "confidence": "low", "note": "受限於艦上照射雷達（如 SPG-51/60）數量，通常遠少於相控陣系統的通道數；公開資料查無台灣艦艇的精確配置數字" },
+    "assess_s": { "nominal": 6, "confidence": "low" },
+    "avg_missile_speed_mps": { "nominal": 700, "min": 550, "max": 1030, "confidence": "low", "sources": ["mda-sm2"], "note": "公開峰值速度 Mach 3+（≈1030 m/s）；本欄位取全程平均，理由與其他飛彈系統一致" },
+    "ready_rounds": { "nominal": 16, "confidence": "low", "note": "垂直發射系統或旋臂發射器的彈艙容量依艦型差異極大（成功級 vs 紀德級不同），公開資料查無台灣艦艇的精確配置，此為量級推估，實際應在 UI 用『本陣地待發彈』依艦型調整" }
+  },
+
+  "targets": ["aircraft", "cruise_missile", "helo"],
+  "render": { "hue": 225, "z_order": 25 }
+}

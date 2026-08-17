@@ -1,0 +1,42 @@
+{
+  "id": "patriot-pac2",
+  "name_zh": "愛國者二型（PAC-2 GEM）",
+  "name_en": "Patriot PAC-2 GEM",
+  "tier": "medium",
+  "role": ["sam"],
+  "platform": "semi-mobile",
+
+  "kinematics": {
+    "$comment": "本表是**純運動學**可及距離；偵測與地平線限制由 MVA / 地平線那條鏈處理，不得重複扣減。低空數值受阻力主導，方法與 tk3.json 一致。nasm-pac2-gem 給的『60 英里以上（約 97 km）』未指定高度，missilery-patriot 給的基礎型 MIM-104A 數字（80 km / 24 km 高度上限）量級吻合，兩者互相印證但都不是專屬 PAC-2 GEM-T 升級後的規格書數字。",
+    "envelope": [
+      { "alt_km": 0.1,  "r_max": { "min": 20, "nominal": 35,  "max": 50,  "confidence": "low", "sources": [], "note": "海平面附近阻力主導，實務上多半是地平線先咬死；無公開來源給此高度數字，屬工程推估" },
+                        "r_min": { "nominal": 3, "confidence": "low", "sources": [] } },
+      { "alt_km": 1,    "r_max": { "min": 40, "nominal": 60, "max": 80, "confidence": "low", "sources": [] } },
+      { "alt_km": 5,    "r_max": { "min": 60, "nominal": 90, "max": 120, "confidence": "low", "sources": [] } },
+      { "alt_km": 10,   "r_max": { "min": 70, "nominal": 97, "max": 140, "confidence": "medium", "sources": ["nasm-pac2-gem", "missilery-patriot"], "note": "97 km 是 nasm-pac2-gem（Smithsonian 展示說明）的數字，與 missilery-patriot 給的基礎型 80 km 同量級；max 140 反映部分二手來源對 GEM-T 升級後更遠射程的宣稱，未經獨立來源印證，confidence 因此沒有進一步提高" } }
+    ],
+    "alt_limits": { "min_km": 0.03, "max_km": 24 },
+    "aspect_factor": { "head_on": 1.0, "beam": 0.75, "tail_chase": 0.45 }
+  },
+
+  "guidance": { "type": "trackvialaunch", "requires_illumination": true, "uplink_required": true },
+
+  "sensor": {
+    "antenna_height_m": { "nominal": 6, "min": 4, "max": 12, "confidence": "low", "note": "AN/MPQ-53 拖車雷達的相對地面架高，無公開精確數字" },
+    "r_det_ref_km": { "nominal": 150, "min": 100, "max": 170, "confidence": "medium", "sources": ["mda-mpq5365", "missilery-patriot"], "note": "mda-mpq5365 給 AN/MPQ-53 約 100（一說 170）km，missilery-patriot 給高空可達 170 km——兩個獨立來源量級吻合。低空探測距離會被地平線鏈另外壓低，不在此欄位重複扣減" },
+    "rcs_ref_m2": 1.0,
+    "elevation_limits_deg": [-3, 80],
+    "azimuth_mask_deg": []
+  },
+
+  "engagement": {
+    "reaction_s": { "nominal": 12, "min": 8, "max": 25, "confidence": "low" },
+    "channels": { "nominal": 8, "min": 6, "max": 24, "confidence": "low", "sources": ["missilery-patriot"], "note": "missilery-patriot 明確引用『同時押送 8 個目標』；另有公開來源稱經典數字是 9、也有較新評估稱可達 24（可能是不同世代射控/IBCS 整合下的數字，非愛國者二型獨有）。這個欄位的公開數字本身分歧就大，confidence 維持 low" },
+    "assess_s": { "nominal": 6, "confidence": "low" },
+    "avg_missile_speed_mps": { "nominal": 1100, "min": 900, "max": 1500, "confidence": "low", "sources": ["missilery-patriot"], "note": "missilery-patriot 給 Mach 3–5（≈1020–1700 m/s）；本欄位要的是全程平均速度，故 nominal 落在該區間中段偏低，理由與 tk3.json 的 avg_missile_speed_mps 相同：飛彈助推後持續減速，直接套峰值會低估飛行時間" },
+    "ready_rounds": { "nominal": 4, "confidence": "medium", "sources": ["opennuclear-patriot-tw"], "note": "每具 M901 發射器 4 枚，多個獨立來源一致（見 sources.json note）。一個連的總發射器數、進而總待發彈量，需在陣地層級用『本陣地待發彈』設定——opennuclear-patriot-tw 提到台灣每連平均約 20 枚 PAC-2 GEM，可作為單一陣地代表整連時的參考值" }
+  },
+
+  "targets": ["aircraft", "cruise_missile", "helo"],
+  "render": { "hue": 140, "z_order": 20 }
+}

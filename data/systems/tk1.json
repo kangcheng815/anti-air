@@ -1,0 +1,43 @@
+{
+  "id": "tk1",
+  "name_zh": "天弓一型",
+  "name_en": "Tien Kung I",
+  "tier": "medium",
+  "role": ["sam"],
+  "platform": "semi-mobile",
+
+  "kinematics": {
+    "$comment": "opennuclear-tk1-tk2（同一系列的 Taiwan 專屬逐項腳註分析，與 opennuclear-tk3-tk4／opennuclear-patriot-tw 是姊妹篇）直接引用 NCSIST 說法：有效射程 5–80 km、有效攔截高度 30 m–23 km。這是三個台灣防空系統系列文章中，唯一一篇連『5 km』這種低空下限都給出官方數字的——本表因此難得地把低空那一列的信心度也拉到 medium。",
+    "envelope": [
+      { "alt_km": 0.1,  "r_max": { "min": 4, "nominal": 5,  "max": 10,  "confidence": "medium", "sources": ["opennuclear-tk1-tk2"], "note": "5 km 是官方（NCSIST）引用的有效射程下限，對應到低空——這已經是官方數字，不是本專案的工程推估" },
+                        "r_min": { "nominal": 3, "confidence": "low", "sources": [] } },
+      { "alt_km": 1,    "r_max": { "min": 15, "nominal": 25, "max": 35, "confidence": "low", "sources": [] } },
+      { "alt_km": 5,    "r_max": { "min": 30, "nominal": 45, "max": 60, "confidence": "low", "sources": [] } },
+      { "alt_km": 10,   "r_max": { "min": 45, "nominal": 65, "max": 80, "confidence": "low", "sources": [] } },
+      { "alt_km": 20,   "r_max": { "min": 55, "nominal": 80, "max": 80, "confidence": "medium", "sources": ["opennuclear-tk1-tk2"], "note": "80 km 是官方引用的有效射程上限" } }
+    ],
+    "alt_limits": { "min_km": 0.03, "max_km": 23 },
+    "aspect_factor": { "head_on": 1.0, "beam": 0.75, "tail_chase": 0.45 }
+  },
+
+  "guidance": { "type": "sarh", "requires_illumination": true, "uplink_required": false },
+
+  "sensor": {
+    "antenna_height_m": { "nominal": 6, "min": 4, "max": 12, "confidence": "low" },
+    "r_det_ref_km": { "nominal": 150, "min": 100, "max": 200, "confidence": "low", "sources": ["opennuclear-tk1-tk2"], "note": "配套的長白（Chang Bai）雷達官方宣稱偵測距離『超過 400 km』，但那是戰略等級的早期預警搜索能力，不等於能餵給接戰的火控等級探測力——直接照抄 400 km 會讓 1990 年代服役的天弓一型偵測距離超過更新的天弓三型（250 km），順序倒反，不合理。本欄位刻意保守，把 400 km 當成上限脈絡而非本欄位的數字" },
+    "rcs_ref_m2": 1.0,
+    "elevation_limits_deg": [-2, 75],
+    "azimuth_mask_deg": []
+  },
+
+  "engagement": {
+    "reaction_s": { "nominal": 12, "min": 8, "max": 25, "confidence": "low" },
+    "channels": { "nominal": 6, "min": 3, "max": 12, "confidence": "low" },
+    "assess_s": { "nominal": 8, "confidence": "low" },
+    "avg_missile_speed_mps": { "nominal": 900, "min": 700, "max": 1200, "confidence": "low" },
+    "ready_rounds": { "nominal": 4, "confidence": "low", "sources": ["opennuclear-tk1-tk2"], "note": "行動式四聯裝發射器；opennuclear-tk1-tk2 提到部署後以 1993 年首座陣地開始，1996 年前全面取代美製奈基力士（Nike Hercules），未給出每連總發射器數" }
+  },
+
+  "targets": ["aircraft", "cruise_missile"],
+  "render": { "hue": 165, "z_order": 22 }
+}
